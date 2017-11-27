@@ -189,7 +189,7 @@ class galaxy:
         if math.isnan(self.galx) or math.isnan(self.galy) or math.isnan(self.galz):
             return "Name : " + self.name + ", RA : " + str(self.RA) +", Dec : " + str(self.dec) + ", Inclination : " + str(self.inc) + ", Distance : "  + str(self.dis)
         else:
-            return "Name : " + self.name + ", RA : " + str(self.RA) +", Dec : " + str(self.dec) + ", Inclination : " + str(self.inc) + ", Distance : "  + str(self.dis) + ", (x,y,z) :" + str(getcartcoord()) + "\r\n"
+            return "Name : " + self.name + ", RA : " + str(self.RA) +", Dec : " + str(self.dec) + ", Inclination : " + str(self.inc) + ", Distance : "  + str(self.dis) + ", (x,y,z) :" + str(self.getcartcoord()) + "\r\n"
     
     def calcgalcoord(self):
         a0 = 192.8595 * math.pi/180
