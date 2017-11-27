@@ -1,3 +1,4 @@
+import argparse
 import time
 import string
 import os
@@ -59,6 +60,24 @@ def test_url( url, normalize = True, module = posixpath ):
     return path_parsed
     sys.stdout.write( "{}\n  --[n={},m={}]-->\n    {}\n".format( 
         url, normalize, module.__name__, dump_array( path_parsed ) ) )
+
+
+
+def testErrorCodes(br,theCodes):
+    for x in theCodes:
+
+        br.select_form(nr=0)
+
+        theAction = br.action
+        payload = {'code': x}
+
+        response = requests.post(theAction, data=payload)
+        print response.status_code
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Download Disk Data")
+    parser.add_argument('-h', help="Shows this")   
+    return parser.parse_args()
 
 def debug_print(stringError=""):
     print stringError
@@ -167,7 +186,10 @@ class galaxy:
         self.angmoment = galaxy.angmomvect()
 
     def __str__(self):
-        return "Name : " + self.name + ", RA : " + str(self.RA) +", Dec : " + str(self.dec) + ", Inclination : " + str(self.inc) + ", Distance : "  + str(self.dis)
+        if math.isnan(self.galx) or math.isnan(self.galy) or math.isnan(self.galz):
+            return "Name : " + self.name + ", RA : " + str(self.RA) +", Dec : " + str(self.dec) + ", Inclination : " + str(self.inc) + ", Distance : "  + str(self.dis)
+        else:
+            return "Name : " + self.name + ", RA : " + str(self.RA) +", Dec : " + str(self.dec) + ", Inclination : " + str(self.inc) + ", Distance : "  + str(self.dis) + ", (x,y,z) :" + str(getcartcoord()) + "\r\n"
     
     def calcgalcoord(self):
         a0 = 192.8595 * math.pi/180
@@ -274,6 +296,10 @@ def gatherData():
         x.append(coord[0])
         y.append(coord[1])
         z.append(coord[2])
+    
+    with open('Coordinates.txt', 'a') as the_file:
+        for gal in listofgals:
+            the_file.write(str(gal))
     
     ax.scatter(x, y, z, c='r', marker='o')
 
