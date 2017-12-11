@@ -221,15 +221,12 @@ class galaxy:
     
     def getangularmomentvect(self, lenr = 1):
         if self.angmoment.getflag() == 0:
-            x,y,z = self.getcartcoord()
-            phi = (90 + self.galb - self.inc) * math.pi/180
-            theta = self.gall * math.pi/180
-            r = lenr
-            angx = r*math.sin(phi)*math.cos(theta)
-            angy = r*math.sin(phi)*math.sin(theta)
-            angz = r*math.cos(phi)
-            start = [x,y,z]
-            end = [x+angx,y+angy,z+angx]
+            x0,y0,z0 = self.getcartcoord()
+            angx=(math.cos(self.galb) * math.cos(self.gall)^(2) +math.sin(self.gall)^(2) )*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall) * math.cos(self.gall)-math.sin(self.gall) * math.cos(self.gall))*(math.cos(self.inc) * math.sin(self.gall)^(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
+            angy=(math.cos(self.galb) * math.cos(self.gall) * math.sin(self.gall)+math.cos(self.gall) * math.sin(self.gall))*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall)^(2) -math.cos(self.gall)^(2) )*(math.cos(self.inc) * math.sin(self.gall)^(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
+            angz=math.sin(self.galb) * math.cos(self.inc)(math.cos(self.gall)^(2) +math.sin(self.gall)^(3) )+math.cos(self.galb) * math.sin(self.inc) * math.cos(self.pa)
+            start = [x0,y0,z0]
+            end = [x0+angx,y0+angy,z0+angx]
             self.angmoment.setstartend(start,end)
         return (self.angmoment)
         
