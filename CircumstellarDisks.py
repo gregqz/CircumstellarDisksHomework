@@ -321,15 +321,15 @@ def gatherData():
         for gal in listofgals:
             the_file.write(str(gal))
     
-    #ax.scatter(x, y, z, c='r', marker='o')
+    ax.scatter(x, y, z, c='r', marker='o')
     ax.quiver(x, y, z, u, v, w)
     
     ax.set_xlabel('X (parsecs)')
     ax.set_ylabel('Y (parsecs)')
     ax.set_zlabel('Z (parsecs)')
-    #ax.set_xlim([-500, 500])
-    #ax.set_ylim([-500, 500])
-    #ax.set_zlim([-500, 500])
+    ax.set_xlim([-500, 500])
+    ax.set_ylim([-500, 500])
+    #ax.set_zlim([-200, 200])
     for ii in xrange(0,360,1):
         ax.view_init(elev=10., azim=ii)
         plt.savefig("./movie/movie%d.png" % ii)
