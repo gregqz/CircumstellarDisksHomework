@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     14389,        381]
-NotebookOptionsPosition[     13478,        345]
-NotebookOutlinePosition[     13821,        360]
-CellTagsIndexPosition[     13778,        357]
+NotebookDataLength[     15133,        399]
+NotebookOptionsPosition[     14222,        363]
+NotebookOutlinePosition[     14565,        378]
+CellTagsIndexPosition[     14522,        375]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -82,7 +82,8 @@ Cos[i]Sin[l]^2+Sin[i]Sin[p]Cos[l])+(Sin[B]Sin[l])*(Sin[i]Sin[p])\\nz[l_,i_,p_,\
 B_]:=Sin[B]Cos[i](Cos[l]^2+Sin[l]^3)+Cos[B]Sin[i]Cos[p]\"\>"], "Output",
  CellChangeTimes->{
   3.721961523530589*^9, 3.721961557671224*^9, {3.721961608435876*^9, 
-   3.7219616606440964`*^9}, 3.721963663432078*^9, 3.7219640499931664`*^9}]
+   3.7219616606440964`*^9}, 3.721963663432078*^9, 3.7219640499931664`*^9, 
+   3.722055739200301*^9}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -223,7 +224,8 @@ B]Sin[l])*(Sin[i]Sin[p])\\ny=(Cos[B]Cos[l]Sin[l]+Cos[l]Sin[l])*(Cos[i]Cos[l]-\
 Sin[i]Sin[p]Sin[l])+(-Cos[B]Sin[l]^2-Cos[l]^2)*(Cos[i]Sin[l]^2+Sin[i]Sin[p]\
 Cos[l])+(Sin[B]Sin[l])*(Sin[i]Sin[p])\\nz=Sin[B]Cos[i](Cos[l]^2+Sin[l]^3)+Cos[\
 B]Sin[i]Cos[p]\"\>"], "Output",
- CellChangeTimes->{3.72196366679836*^9, 3.7219640538548117`*^9}]
+ CellChangeTimes->{3.72196366679836*^9, 3.7219640538548117`*^9, 
+  3.722055739291145*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -252,7 +254,8 @@ Sin[l])*(Sin[i]Sin[p])\"\>",
  CellChangeTimes->{{3.7219637628734474`*^9, 3.7219637954758515`*^9}, 
    3.721963833719857*^9, {3.7219638682186785`*^9, 3.721963935147784*^9}, {
    3.7219639675684347`*^9, 3.7219639973542633`*^9}, {3.7219640559516134`*^9, 
-   3.72196407484552*^9}, {3.7219650067576766`*^9, 3.721965019062255*^9}}]
+   3.72196407484552*^9}, {3.7219650067576766`*^9, 3.721965019062255*^9}, 
+   3.7220557397064734`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -266,68 +269,82 @@ Cell[BoxData[
       RowBox[{"StringReplace", "[", 
        RowBox[{
         RowBox[{"StringReplace", "[", 
-         RowBox[{"#", ",", 
+         RowBox[{
+          RowBox[{"StringReplace", "[", 
+           RowBox[{"#", ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"\"\<]Sin\>\"", "\[Rule]", " ", "\"\<] * Sin\>\""}], 
+              ",", 
+              RowBox[{"\"\<]Cos\>\"", "\[Rule]", " ", "\"\<] * Cos\>\""}], 
+              ",", 
+              RowBox[{"\"\<^2\>\"", "\[Rule]", " ", "\"\<**(2) \>\""}], ",", 
+              RowBox[{"\"\<^3\>\"", "\[Rule]", " ", "\"\<**(3) \>\""}], ",", 
+              RowBox[{"\"\<Sin\>\"", "\[Rule]", " ", "\"\<math.sin\>\""}], 
+              ",", 
+              RowBox[{"\"\<Cos\>\"", "\[Rule]", " ", "\"\<math.cos\>\""}]}], 
+             "}"}]}], "]"}], ",", 
           RowBox[{"{", 
            RowBox[{
-            RowBox[{"\"\<]Sin\>\"", "\[Rule]", " ", "\"\<] * Sin\>\""}], ",", 
-            RowBox[{"\"\<]Cos\>\"", "\[Rule]", " ", "\"\<] * Cos\>\""}], ",", 
-            RowBox[{"\"\<^2\>\"", "\[Rule]", " ", "\"\<**(2) \>\""}], ",", 
-            RowBox[{"\"\<^3\>\"", "\[Rule]", " ", "\"\<**(3) \>\""}], ",", 
             RowBox[{"\"\<Sin\>\"", "\[Rule]", " ", "\"\<math.sin\>\""}], ",", 
-            RowBox[{"\"\<Cos\>\"", "\[Rule]", " ", "\"\<math.cos\>\""}]}], 
+            RowBox[{"\"\<Cos\>\"", "\[Rule]", " ", "\"\<math.cos\>\""}], ",", 
+            RowBox[{"\"\<[\>\"", "\[Rule]", " ", "\"\<(\>\""}], ",", 
+            RowBox[{"\"\<]\>\"", "\[Rule]", " ", "\"\<)\>\""}], ",", 
+            RowBox[{"\"\<B\>\"", "\[Rule]", " ", "\"\<self.galb\>\""}], ",", 
+            RowBox[{"\"\<p\>\"", "\[Rule]", " ", "\"\<self.pa\>\""}], ",", 
+            RowBox[{"\"\<l\>\"", "\[Rule]", " ", "\"\<self.gall\>\""}]}], 
            "}"}]}], "]"}], ",", 
         RowBox[{"{", 
-         RowBox[{
-          RowBox[{"\"\<Sin\>\"", "\[Rule]", " ", "\"\<math.sin\>\""}], ",", 
-          RowBox[{"\"\<Cos\>\"", "\[Rule]", " ", "\"\<math.cos\>\""}], ",", 
-          RowBox[{"\"\<[\>\"", "\[Rule]", " ", "\"\<(\>\""}], ",", 
-          RowBox[{"\"\<]\>\"", "\[Rule]", " ", "\"\<)\>\""}], ",", 
-          RowBox[{"\"\<B\>\"", "\[Rule]", " ", "\"\<self.galb\>\""}], ",", 
-          RowBox[{"\"\<p\>\"", "\[Rule]", " ", "\"\<self.pa\>\""}], ",", 
-          RowBox[{"\"\<l\>\"", "\[Rule]", " ", "\"\<self.gall\>\""}]}], 
+         RowBox[{"\"\<(i)\>\"", "\[Rule]", " ", "\"\<(self.inc)\>\""}], 
          "}"}]}], "]"}], ",", 
       RowBox[{"{", 
-       RowBox[{"\"\<(i)\>\"", "\[Rule]", " ", "\"\<(self.inc)\>\""}], "}"}]}],
-      "]"}]}], "&"}], "/@", "unss"}]], "Input",
+       RowBox[{
+       "\"\<self.inc)(math.cos\>\"", "\[Rule]", " ", 
+        "\"\<self.inc)*(math.cos\>\""}], "}"}]}], "]"}]}], "&"}], "/@", 
+  "unss"}]], "Input",
  CellChangeTimes->{{3.721965021289764*^9, 3.721965217211402*^9}, {
   3.7219652673992953`*^9, 3.7219653348954*^9}, {3.7219653868823347`*^9, 
   3.721965444185104*^9}, {3.7219655233628902`*^9, 3.721965663701174*^9}, {
-  3.7220554788680964`*^9, 3.7220554842956085`*^9}}],
+  3.7220554788680964`*^9, 3.7220554842956085`*^9}, {3.7220556937395167`*^9, 
+  3.722055778801957*^9}}],
 
 Cell[CellGroupData[{
 
-Cell[BoxData["\<\"x=(math.cos(self.galb) * math.cos(self.gall)^(2) \
-+math.sin(self.gall)^(2) )*(math.cos(self.inc) * \
+Cell[BoxData["\<\"x=(math.cos(self.galb) * math.cos(self.gall)**(2) \
++math.sin(self.gall)**(2) )*(math.cos(self.inc) * \
 math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * \
 math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall) * \
 math.cos(self.gall)-math.sin(self.gall) * \
-math.cos(self.gall))*(math.cos(self.inc) * math.sin(self.gall)^(2) \
+math.cos(self.gall))*(math.cos(self.inc) * math.sin(self.gall)**(2) \
 +math.sin(self.inc) * math.sin(self.pa) * \
 math.cos(self.gall))+(math.sin(self.galb) * \
 math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))\"\>"], "Print",
  CellChangeTimes->{
   3.7219653352078896`*^9, 3.721965412385193*^9, 3.72196544719724*^9, 
-   3.7219656058200297`*^9, {3.721965638319087*^9, 3.7219656646701508`*^9}}],
+   3.7219656058200297`*^9, {3.721965638319087*^9, 3.7219656646701508`*^9}, {
+   3.7220557397144785`*^9, 3.72205575007822*^9}, 3.722055784166744*^9}],
 
 Cell[BoxData["\<\"y=(math.cos(self.galb) * math.cos(self.gall) * \
 math.sin(self.gall)+math.cos(self.gall) * \
 math.sin(self.gall))*(math.cos(self.inc) * \
 math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * \
-math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall)^(2) \
--math.cos(self.gall)^(2) )*(math.cos(self.inc) * math.sin(self.gall)^(2) \
+math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall)**(2) \
+-math.cos(self.gall)**(2) )*(math.cos(self.inc) * math.sin(self.gall)**(2) \
 +math.sin(self.inc) * math.sin(self.pa) * \
 math.cos(self.gall))+(math.sin(self.galb) * \
 math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))\"\>"], "Print",
  CellChangeTimes->{
   3.7219653352078896`*^9, 3.721965412385193*^9, 3.72196544719724*^9, 
-   3.7219656058200297`*^9, {3.721965638319087*^9, 3.7219656646701508`*^9}}],
+   3.7219656058200297`*^9, {3.721965638319087*^9, 3.7219656646701508`*^9}, {
+   3.7220557397144785`*^9, 3.72205575007822*^9}, 3.722055784170247*^9}],
 
 Cell[BoxData["\<\"z=math.sin(self.galb) * \
-math.cos(self.inc)(math.cos(self.gall)^(2) +math.sin(self.gall)^(3) \
+math.cos(self.inc)*(math.cos(self.gall)**(2) +math.sin(self.gall)**(3) \
 )+math.cos(self.galb) * math.sin(self.inc) * math.cos(self.pa)\"\>"], "Print",
  CellChangeTimes->{
   3.7219653352078896`*^9, 3.721965412385193*^9, 3.72196544719724*^9, 
-   3.7219656058200297`*^9, {3.721965638319087*^9, 3.7219656646701508`*^9}}]
+   3.7219656058200297`*^9, {3.721965638319087*^9, 3.7219656646701508`*^9}, {
+   3.7220557397144785`*^9, 3.72205575007822*^9}, 3.7220557841732492`*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -337,7 +354,8 @@ Cell[BoxData[
   3.721965217820781*^9, {3.7219652753846655`*^9, 3.721965295634369*^9}, {
    3.7219653265819583`*^9, 3.7219653352078896`*^9}, 3.721965412400818*^9, 
    3.72196544719724*^9, 3.7219656058356557`*^9, {3.721965638319087*^9, 
-   3.7219656646701508`*^9}}]
+   3.7219656646701508`*^9}, {3.7220557397233562`*^9, 3.722055750087227*^9}, 
+   3.7220557841757507`*^9}]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -361,28 +379,28 @@ CellTagsIndex->{}
 Notebook[{
 Cell[CellGroupData[{
 Cell[580, 22, 2492, 52, 132, "Input"],
-Cell[3075, 76, 634, 8, 72, "Output"]
+Cell[3075, 76, 660, 9, 72, "Output"]
 }, Open  ]],
-Cell[3724, 87, 94, 1, 31, "Input"],
-Cell[3821, 90, 3746, 122, 72, "Input"],
+Cell[3750, 88, 94, 1, 31, "Input"],
+Cell[3847, 91, 3746, 122, 72, "Input"],
 Cell[CellGroupData[{
-Cell[7592, 216, 99, 1, 31, "Input"],
-Cell[7694, 219, 492, 6, 72, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[8223, 230, 373, 9, 31, "Input"],
-Cell[8599, 241, 796, 13, 52, "Output"]
+Cell[7618, 217, 99, 1, 31, "Input"],
+Cell[7720, 220, 517, 7, 72, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[9432, 259, 1769, 35, 52, "Input"],
+Cell[8274, 232, 373, 9, 31, "Input"],
+Cell[8650, 243, 824, 14, 52, "Output"]
+}, Open  ]],
 Cell[CellGroupData[{
-Cell[11226, 298, 698, 11, 62, "Print"],
-Cell[11927, 311, 698, 11, 43, "Print"],
-Cell[12628, 324, 358, 5, 23, "Print"]
+Cell[9511, 262, 2128, 46, 92, "Input"],
+Cell[CellGroupData[{
+Cell[11664, 312, 774, 12, 62, "Print"],
+Cell[12441, 326, 774, 12, 43, "Print"],
+Cell[13218, 340, 436, 6, 23, "Print"]
 }, Open  ]],
-Cell[13001, 332, 362, 7, 31, "Output"]
+Cell[13669, 349, 438, 8, 64, "Output"]
 }, Open  ]],
-Cell[13378, 342, 96, 1, 31, "Input"]
+Cell[14122, 360, 96, 1, 31, "Input"]
 }
 ]
 *)
