@@ -7,6 +7,7 @@ The python file was compiled on python 2.7.14 with the following libraries
 * matplotlib
 * BeautifulSoup
 * lxml
+* argparse (why?)
 * Maybe others I haven't caught?
 ## Code Documentation?
 My code is self-documenting, like everything else.
