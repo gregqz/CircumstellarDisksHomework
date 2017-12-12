@@ -234,10 +234,19 @@ class galaxy:
                 return (self.angmoment) 
             if self.inc == 90:
                 self.pa = self.pa - 90
+            print " inc " + str(self.inc) + " ; pa " + str(self.pa) + " ; gall " + str(self.gall) + " ; galb " + str(self.galb)
+            self.galb *= math.pi/180
+            self.gall *= math.pi/180
+            self.inc *= math.pi/180
+            self.pa *= math.pi/180
+            print " inc " + str(self.inc) + " ; pa " + str(self.pa) + " ; gall " + str(self.gall) + " ; galb " + str(self.galb)
             angx=(math.cos(self.galb) * math.cos(self.gall)**(2) +math.sin(self.gall)**(2) )*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall) * math.cos(self.gall)-math.sin(self.gall) * math.cos(self.gall))*(math.cos(self.inc) * math.sin(self.gall)**(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
             angy=(math.cos(self.galb) * math.cos(self.gall) * math.sin(self.gall)+math.cos(self.gall) * math.sin(self.gall))*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall)**(2) -math.cos(self.gall)**(2) )*(math.cos(self.inc) * math.sin(self.gall)**(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
             angz = math.sin(self.galb) * math.cos(self.inc) * (math.cos(self.gall)**(2) +math.sin(self.gall)**(3) )+math.cos(self.galb) * math.sin(self.inc) * math.cos(self.pa)
-            start = [x0,y0,z0]
+            self.galb *= 180/math.pi
+            self.gall *= 180/math.pi
+            self.inc *= 180/math.pi
+            self.pa *= 180/math.pi            start = [x0,y0,z0]
             end = [x0+angx,y0+angy,z0+angx]
             self.angmoment.setstartend(start,end)
         return (self.angmoment)
@@ -297,6 +306,8 @@ def gatherData():
         thisgal = galaxy(link.string,tempra,tempdec,tempinc,temppa,tempdis)
         listofgals.append(thisgal)
         n = n + 1
+        if n > 10:
+            #break
     
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
