@@ -169,15 +169,22 @@ class galaxy:
         def getflag(self):
             return self.flag
         
+        def getstartend(self):
+            return [item for sublist in [self.start,self.end] for item in sublist]
+        
         def __str__(self):
             return "Starting Point : " + dump_array(self.start) + "; Ending Point : " + dump_array(self.end)
     
-    def __init__(self,galname,galRA,galDec,galinc,galDis):
+    def __init__(self,galname,galRA,galDec,galinc,galpa,galDis):
+        galpa = galpa.replace(u'\u2212', '-').replace(u'\u2013', '-')
+        if galpa == 'N/A':
+            galpa = 'nan'
         self.name = galname #Name
         self.RA = galaxy.RA(galRA)
         self.dec = galaxy.Dec(galDec)
         self.inc = float(galinc)
         self.dis = float(galDis)
+        self.pa = float(galpa)
         self.gall = float('nan')
         self.galb = float('nan')
         self.galx = float('nan')
@@ -222,14 +229,18 @@ class galaxy:
     def getangularmomentvect(self, lenr = 1):
         if self.angmoment.getflag() == 0:
             x0,y0,z0 = self.getcartcoord()
-            angx=(math.cos(self.galb) * math.cos(self.gall)^(2) +math.sin(self.gall)^(2) )*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall) * math.cos(self.gall)-math.sin(self.gall) * math.cos(self.gall))*(math.cos(self.inc) * math.sin(self.gall)^(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
-            angy=(math.cos(self.galb) * math.cos(self.gall) * math.sin(self.gall)+math.cos(self.gall) * math.sin(self.gall))*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall)^(2) -math.cos(self.gall)^(2) )*(math.cos(self.inc) * math.sin(self.gall)^(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
-            angz=math.sin(self.galb) * math.cos(self.inc)(math.cos(self.gall)^(2) +math.sin(self.gall)^(3) )+math.cos(self.galb) * math.sin(self.inc) * math.cos(self.pa)
+            if True in map(math.isnan,[self.inc,self.pa]):
+                self.angmoment.setstartend([float('nan'),float('nan'),float('nan')],[float('nan'),float('nan'),float('nan')])
+                return (self.angmoment) 
+            if self.inc == 90:
+                self.pa = self.pa - 90
+            angx=(math.cos(self.galb) * math.cos(self.gall)**(2) +math.sin(self.gall)**(2) )*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall) * math.cos(self.gall)-math.sin(self.gall) * math.cos(self.gall))*(math.cos(self.inc) * math.sin(self.gall)**(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
+            angy=(math.cos(self.galb) * math.cos(self.gall) * math.sin(self.gall)+math.cos(self.gall) * math.sin(self.gall))*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall)**(2) -math.cos(self.gall)**(2) )*(math.cos(self.inc) * math.sin(self.gall)**(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
+            angz = math.sin(self.galb) * math.cos(self.inc) * (math.cos(self.gall)**(2) +math.sin(self.gall)**(3) )+math.cos(self.galb) * math.sin(self.inc) * math.cos(self.pa)
             start = [x0,y0,z0]
             end = [x0+angx,y0+angy,z0+angx]
             self.angmoment.setstartend(start,end)
         return (self.angmoment)
-        
 
 def findString(obj):
     for descendant in obj.descendants:
@@ -270,6 +281,7 @@ def gatherData():
         tempdec = 'nan nan nan'
         tempdis = 'nan'
         tempinc = 'nan'
+        temppa = 'nan'
         for row in t_m:
             if "RA" in row[0]:
                 tempra = row[1]
@@ -279,33 +291,49 @@ def gatherData():
                 tempdis = row[1]
             if "Inclination" in row[0]:
                 tempinc = row[1]
-        thisgal = galaxy(link.string,tempra,tempdec,tempinc,tempdis)
+            if "PA" in row[0]:
+                temppa = row[1]
+        print tempra + " " + tempdec + " " + tempdis + " " + tempinc + " " + temppa
+        thisgal = galaxy(link.string,tempra,tempdec,tempinc,temppa,tempdis)
         listofgals.append(thisgal)
         n = n + 1
     
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    listofcoords = map(galaxy.getcartcoord,listofgals)
+    listofcoords = map(galaxy.getangularmomentvect,listofgals)
     x = []
     y = []
     z = []
+    u = []
+    v = []
+    w = []
     for coord in listofcoords:
-        x.append(coord[0])
-        y.append(coord[1])
-        z.append(coord[2])
+        print coord
+        if not float('nan') in coord.getstartend():
+            x.append(coord.start[0])
+            y.append(coord.start[1])
+            z.append(coord.start[2])
+            u.append(coord.end[0])
+            v.append(coord.end[1])
+            w.append(coord.end[2])
     
     with open('Coordinates.txt', 'a') as the_file:
         for gal in listofgals:
             the_file.write(str(gal))
     
-    ax.scatter(x, y, z, c='r', marker='o')
-
+    #ax.scatter(x, y, z, c='r', marker='o')
+    ax.quiver(x, y, z, u, v, w)
+    
     ax.set_xlabel('X (parsecs)')
     ax.set_ylabel('Y (parsecs)')
     ax.set_zlabel('Z (parsecs)')
+    ax.set_xlim([-3, 3])
+    ax.set_ylim([-3, 3])
+    ax.set_zlim([-3, 3])
     for ii in xrange(0,360,1):
         ax.view_init(elev=10., azim=ii)
         plt.savefig("./movie/movie%d.png" % ii)
+    
     br.close()
     
 def main():
