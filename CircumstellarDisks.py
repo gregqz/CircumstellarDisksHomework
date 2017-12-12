@@ -327,9 +327,9 @@ def gatherData():
     ax.set_xlabel('X (parsecs)')
     ax.set_ylabel('Y (parsecs)')
     ax.set_zlabel('Z (parsecs)')
-    ax.set_xlim([-3, 3])
-    ax.set_ylim([-3, 3])
-    ax.set_zlim([-3, 3])
+    #ax.set_xlim([-500, 500])
+    #ax.set_ylim([-500, 500])
+    #ax.set_zlim([-500, 500])
     for ii in xrange(0,360,1):
         ax.view_init(elev=10., azim=ii)
         plt.savefig("./movie/movie%d.png" % ii)
