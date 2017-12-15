@@ -10,6 +10,7 @@ from urllib2 import HTTPError
 import mechanize
 import logging
 import math
+import numpy as np
 import matplotlib
 from mpl_toolkits.mplot3d import Axes3D
 matplotlib.use('Agg')
@@ -232,22 +233,51 @@ class galaxy:
             if True in map(math.isnan,[self.inc,self.pa]):
                 self.angmoment.setstartend([float('nan'),float('nan'),float('nan')],[float('nan'),float('nan'),float('nan')])
                 return (self.angmoment) 
-            if self.inc == 90:
-                self.pa = self.pa - 90
-            print " inc " + str(self.inc) + " ; pa " + str(self.pa) + " ; gall " + str(self.gall) + " ; galb " + str(self.galb)
-            self.galb *= math.pi/180
-            self.gall *= math.pi/180
-            self.inc *= math.pi/180
-            self.pa *= math.pi/180
-            print " inc " + str(self.inc) + " ; pa " + str(self.pa) + " ; gall " + str(self.gall) + " ; galb " + str(self.galb)
-            angx=(math.cos(self.galb) * math.cos(self.gall)**(2) +math.sin(self.gall)**(2) )*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(-math.cos(self.galb) * math.sin(self.gall) * math.cos(self.gall)-math.sin(self.gall) * math.cos(self.gall))*(math.cos(self.inc) * math.sin(self.gall)**(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.cos(self.pa))
-            angy=(math.cos(self.galb) * math.cos(self.gall) * math.sin(self.gall)-math.cos(self.gall) * math.sin(self.gall))*(math.cos(self.inc) * math.cos(self.gall)-math.sin(self.inc) * math.sin(self.pa) * math.sin(self.gall))+(math.cos(self.galb) * math.sin(self.gall)**(2) +math.cos(self.gall)**(2) )*(math.cos(self.inc) * math.sin(self.gall)**(2) +math.sin(self.inc) * math.sin(self.pa) * math.cos(self.gall))+(-math.sin(self.galb) * math.sin(self.gall))*(math.sin(self.inc) * math.sin(self.pa))
-            angz = math.sin(self.galb) * math.cos(self.inc) * (math.cos(self.gall)**(2) +math.sin(self.gall)**(3) )+math.cos(self.galb) * math.sin(self.inc) * math.cos(self.pa)
-            self.galb *= 180/math.pi
-            self.gall *= 180/math.pi
-            self.inc *= 180/math.pi
-            self.pa *= 180/math.pi            start = [x0,y0,z0]
+            worldupstar = galaxy("Celetial North","0 0 0","90 0 0","0","0","1") #World Up
+            worldup = worldupstar.getcartcoord() #Get the xf,yf,zf coordinates of World Up
+            print worldup
+            OutV = [-x0/self.dis,-y0/self.dis,-z0/self.dis,0] #Out Vector; AKA the Line of Sight Vector ( Row 3 )
+            #now we got the two unit vectors we can calculate the Up vector ( Row 2 )
+            dp = OutV[0]*worldup[0] + OutV[1]*worldup[1] + OutV[2]*worldup[2]
+            Up = [worldup[0]-dp*OutV[0],worldup[1]-dp*OutV[1],worldup[2]-dp*OutV[2]]
+            Upnorm = math.sqrt(Up[0]**2 + Up[1]**2 + Up[2]**2)
+            Up = [Up[0]/Upnorm,Up[1]/Upnorm,Up[2]/Upnorm,0] # Row 2
+            #We can now build row 1 by crossing the up and out vectors
+            Right = [Up[1]*OutV[2]-Up[2]*OutV[1],Up[2]*OutV[0]-Up[0]*OutV[2],Up[0]*OutV[1]-Up[1]*OutV[0],0] # Row ( Row 1 ) 
+            LookMatrix = [Right,Up,OutV,[0,0,0,1]]
+            # We now have a Rotation matrix which represents the North and East Coordinate system at any point in the sky
+            # This Matrix represents the relative coordinate system; with the z axis being the Line of Sight, y axis being Celestial North, and the x axis being East
+            # We are now going to Rotate around the x axis for the inclination angle
+            theta = self.inc * math.pi/180
+            Rprime = [[1,0,0,0],[0,math.cos(theta),-math.sin(theta),0],[0,math.sin(theta),math.cos(theta),0],[0,0,0,1]]
+            rprimenpm = np.matrix(Rprime)
+            LookMatrixnpm = np.matrix(LookMatrix)
+            Rvec = rprimenpm*LookMatrixnpm
+            dlx2 = np.matrix([1,0,0,1])*Rvec
+            dly2 = np.matrix([0,1,0,1])*Rvec
+            dlz2 = np.matrix([0,0,1,1])*Rvec
+            # we can now rotate this coordinate system around the Line of Sight in the correct direction
+            rotatepa = self.pa * math.pi/180
+            t = (1-math.cos(rotatepa))
+            c = math.cos(rotatepa)
+            s = math.sin(rotatepa)
+            x = OutV[0]
+            y = OutV[1]
+            z = OutV[2]
+            Rvec2 = [[t * (x**2) + c, t*x*y - s*z, t*x*z + s*y,0],[t*x*y + s*z,t * (y**2) + c, t*y*z - s*x,0],[t*x*z - s*y,t*y*z + s*x,t*(z**2) + c,0],[0,0,0,1]]
+            Rvec2npm = np.matrix(Rvec2)
+            newx = Rvec2npm*dlx2.transpose()
+            newy = Rvec2npm*dly2.transpose()
+            newz = Rvec2npm*dlz2.transpose()
+            newzli= newz.tolist()
+            newzli = [item for sublist in newzli for item in sublist]
+            angx = newzli[0]
+            angy = newzli[1]
+            angz = newzli[2]
+            start = [x0,y0,z0]
             end = [x0+angx,y0+angy,z0+angx]
+            print start
+            print end
             self.angmoment.setstartend(start,end)
         return (self.angmoment)
 
