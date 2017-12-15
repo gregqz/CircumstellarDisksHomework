@@ -123,6 +123,13 @@ def createBrowserObject():
     
     return br
 
+def matmult(a,b):
+    zip_b = zip(*b)
+    # uncomment next line if python 3 : 
+    # zip_b = list(zip_b)
+    return [[sum(ele_a*ele_b for ele_a, ele_b in zip(row_a, col_b)) 
+             for col_b in zip_b] for row_a in a]
+
 class galaxy:
     class RA:
         def __init__(self,string):
@@ -194,10 +201,8 @@ class galaxy:
         self.angmoment = galaxy.angmomvect()
 
     def __str__(self):
-        if math.isnan(self.galx) or math.isnan(self.galy) or math.isnan(self.galz):
-            return "Name : " + self.name + ", RA : " + str(self.RA) +", Dec : " + str(self.dec) + ", Inclination : " + str(self.inc) + ", Distance : "  + str(self.dis)
-        else:
-            return "Name : " + self.name + ", RA : " + str(self.RA) +", Dec : " + str(self.dec) + ", Inclination : " + str(self.inc) + ", Distance : "  + str(self.dis) + ", (x,y,z) :" + str(self.getcartcoord()) + "\r\n"
+        self.getangularmomentvect()
+        return "'Name : " + self.name + "'," + str(self.getcartcoord()) + "," + str(self.pa * math.pi/180) + "," + str(self.inc * math.pi/180) + "\r\n"
     
     def calcgalcoord(self):
         a0 = 192.8595 * math.pi/180
@@ -278,6 +283,7 @@ class galaxy:
             end = [x0+angx,y0+angy,z0+angx]
             print start
             print end
+            self.angmoment.flag = 1
             self.angmoment.setstartend(start,end)
         return (self.angmoment)
 
@@ -336,11 +342,8 @@ def gatherData():
         thisgal = galaxy(link.string,tempra,tempdec,tempinc,temppa,tempdis)
         listofgals.append(thisgal)
         n = n + 1
-        if n > 10:
-            #break
     
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+
     listofcoords = map(galaxy.getangularmomentvect,listofgals)
     x = []
     y = []
@@ -348,6 +351,7 @@ def gatherData():
     u = []
     v = []
     w = []
+    zcomp = []
     for coord in listofcoords:
         print coord
         if not float('nan') in coord.getstartend():
@@ -357,11 +361,25 @@ def gatherData():
             u.append(coord.end[0])
             v.append(coord.end[1])
             w.append(coord.end[2])
+            c = coord.end[2] - coord.start[2]
+            if not math.isnan(c):
+                zcomp.append(coord.end[2] - coord.start[2])
+    
+    
     
     with open('Coordinates.txt', 'a') as the_file:
         for gal in listofgals:
             the_file.write(str(gal))
     
+    plt.figure(1)
+    mini = np.amin(zcomp)
+    maxi = np.amax(zcomp)
+    binsra = np.arange(mini,maxi,0.1)
+    plt.hist(zcomp, bins=binsra)
+    plt.savefig("./binplot")
+    
+    fig = plt.figure(2,figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
+    ax = fig.add_subplot(111, projection='3d')
     ax.scatter(x, y, z, c='r', marker='o')
     ax.quiver(x, y, z, u, v, w)
     
@@ -370,7 +388,7 @@ def gatherData():
     ax.set_zlabel('Z (parsecs)')
     ax.set_xlim([-500, 500])
     ax.set_ylim([-500, 500])
-    #ax.set_zlim([-200, 200])
+    #ax.set_zlim([-500, 500])
     for ii in xrange(0,360,1):
         ax.view_init(elev=10., azim=ii)
         plt.savefig("./movie/movie%d.png" % ii)
