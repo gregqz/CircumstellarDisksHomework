@@ -13,4 +13,4 @@ The python file was compiled on python 2.7.14 with the following libraries
 ## Code Documentation?
 My code is self-documenting, like everything else.
 ## Mathematica?
-I decided to use mathematica to turn a typed out formula into something python could read
+Contained are mathematica files I used in this project, one was for string manipulation, and the other I used to double check my work and do a lot of the heavy algorithm creation
